@@ -9,7 +9,7 @@ def _(client=client):
         '/users/',
         json={
             'username': 'Darak',
-            'passworld': 'Teste123',
+            'password': 'Teste123',
             'email': 'teste@gmail.com',
         },
     )
@@ -27,4 +27,22 @@ def _(client=client):
     assert response.status_code == HTTPStatus.OK
     assert response.json() == {
         'users': [{'username': 'Darak', 'email': 'teste@gmail.com', 'id': 1}]
+    }
+
+
+@test('Troca dados do usuario no banco')
+def _(client=client):
+    response = client.put(
+        '/users/1',
+        json={
+            'password': '123',
+            'username': 'Andre DAvila Silva',
+            'email': 'teste23@gmail.com',
+            'id': 1,
+        },
+    )
+    assert response.json() == {
+        'username': 'Andre DAvila Silva',
+        'email': 'teste23@gmail.com',
+        'id': 1,
     }
