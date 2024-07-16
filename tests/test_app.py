@@ -46,3 +46,10 @@ def _(client=client):
         'email': 'teste23@gmail.com',
         'id': 1,
     }
+
+
+@test('Delete usuario por ID')
+def _(client=client):
+    response = client.delete('/users/1')
+    assert response.json() == {'Message': 'User deleted'}
+      

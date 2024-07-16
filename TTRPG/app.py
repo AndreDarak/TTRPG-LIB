@@ -1,7 +1,7 @@
 from http import HTTPStatus
 
 from fastapi import FastAPI, HTTPException
-from TTRPG.schemas import UserSchema, UserPublic, UserDB, UserList
+from TTRPG.schemas import UserSchema, UserPublic, UserDB, UserList, Message
 
 app = FastAPI()
 
@@ -32,10 +32,13 @@ def update_user(user_id: int, user: UserSchema):
     return user_With_id
 
 
-@app.delete('/users/{user_id}', response_model=UserPublic)
+@app.delete('/users/{user_id}', response_model=Message)
 def delete_user(user_id: int):
-    if user_id < 1 or user_id > len(database):
+    if user_id > len(database) or user_id < 1:
         raise HTTPException(
-            status_code=HTTPStatus.NOT_FOUND, detail='User Not Found'
+            status_code=HTTPStatus.NOT_FOUND, detail='User not found'
         )
-    del database[user_id - 1]    
+
+    del database[user_id - 1]
+
+    return {'Message': 'User deleted'}  
